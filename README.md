@@ -12,12 +12,13 @@ Introducing "Alertify: Your Comprehensive Broadcast Destination" - the ultimate 
 
 ## Objectives:
 
-The "Alertify" app project aims to streamline communication between college faculty members and students by offering a centralized platform for notifications, event reminders, and academic information.
-
-* Centralization
-* Efficiency
-* Accessibility
-* Engagement
+* Ensure Adequate and Safe Water Supply.
+* Reduce Water Wastage and Losses.
+* Ensure Equitable Distribution of Water Resources.
+* Address Water Loss Due to Old Infrastructure.
+* Prevent Unauthorized/Illegal Connections.
+* Monitoring the water distribution by tanker’s.
+* Establish Comprehensive Mapping and Demand-Supply
 
 
 ## Technologies Used:
