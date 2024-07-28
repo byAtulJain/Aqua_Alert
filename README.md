@@ -23,4 +23,5 @@ To address these issues, we propose "Aqua Alert," a robust application designed 
 * Dart v3.2.5
 * IDE - Android Studio Iguana v2023.2.1
 * Firebase
+* API - Google Map API
 
