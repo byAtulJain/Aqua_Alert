@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1039888718908",
+    "project_id": "water-supply-3f70f",
+    "storage_bucket": "water-supply-3f70f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1039888718908:android:6cd196e50415f62c74f739",
+        "android_client_info": {
+          "package_name": "com.example.water_supply_management"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkwvQv8jfAvS-z_48oTMxLg5AYzN99kkI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
