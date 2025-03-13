@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'add_user_detail_screen.dart';
+import 'bottom_nav_bar.dart';
 import 'home_screen.dart';
 
 class OTPScreen extends StatefulWidget {
@@ -43,7 +44,10 @@ class _OTPScreenState extends State<OTPScreen> {
         } else {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => HomeScreen()),
+            MaterialPageRoute(
+                builder: (context) => BottomNavBar(
+                      user: user,
+                    )),
           );
         }
       }
@@ -117,7 +121,7 @@ class _OTPScreenState extends State<OTPScreen> {
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.deepPurple,
+                  backgroundColor: Colors.deepPurple,
                   padding:
                       EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
                   shape: RoundedRectangleBorder(

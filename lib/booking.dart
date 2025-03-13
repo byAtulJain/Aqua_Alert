@@ -18,7 +18,6 @@ class _TankBookingScreenState extends State<TankBookingScreen> {
   ];
   String? _selectedCapacity;
   String? _price;
-
   late Future<Map<String, dynamic>> _userDataFuture;
 
   @override
@@ -70,6 +69,7 @@ class _TankBookingScreenState extends State<TankBookingScreen> {
         'name': userData['name'],
         'address': userData['address'],
         'phone': userData['phone'],
+        'pincode': userData['pincode'],
         'capacity': _selectedCapacity,
         'price': _price,
         'timestamp': FieldValue.serverTimestamp(),
@@ -89,6 +89,7 @@ class _TankBookingScreenState extends State<TankBookingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Center(
           child: Text(
             'Tank Booking',
@@ -128,6 +129,10 @@ class _TankBookingScreenState extends State<TankBookingScreen> {
                     _buildUserInfoTile(
                         title: 'Phone No',
                         subtitle: userData['phone'] ?? 'Not available'),
+                    SizedBox(height: 16.0),
+                    _buildUserInfoTile(
+                        title: 'Pincode',
+                        subtitle: userData['pincode'] ?? 'Not available'),
                     SizedBox(height: 20),
                     Container(
                       decoration: BoxDecoration(
@@ -205,7 +210,7 @@ class _TankBookingScreenState extends State<TankBookingScreen> {
                       child: ElevatedButton(
                         onPressed: _submitBooking,
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.deepPurple,
+                          backgroundColor: Colors.deepPurple,
                           padding: EdgeInsets.symmetric(vertical: 15.0),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12.0),

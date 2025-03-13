@@ -32,6 +32,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Center(
           child: Text(
             'Profile',
@@ -129,7 +130,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.deepPurple,
+                      backgroundColor: Colors.deepPurple,
                       padding: EdgeInsets.symmetric(
                           horizontal: 32.0, vertical: 16.0),
                       shape: RoundedRectangleBorder(

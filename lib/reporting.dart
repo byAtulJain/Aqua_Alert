@@ -57,6 +57,7 @@ class _ReportScreenState extends State<ReportScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Center(
           child: Text('Submit a Report',
               style:
@@ -141,7 +142,7 @@ class _ReportScreenState extends State<ReportScreen> {
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.deepPurple,
+                          backgroundColor: Colors.deepPurple,
                           padding: EdgeInsets.symmetric(vertical: 15.0),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12.0),

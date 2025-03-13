@@ -30,15 +30,26 @@ class _AddUserDetailScreenState extends State<AddUserDetailScreen> {
   @override
   void initState() {
     super.initState();
-    print(widget.initialData); // Debug statement to check initialData
-    if (widget.initialData != null) {
-      _nameController.text = widget.initialData!['name'] ?? '';
-      _addressController.text = widget.initialData!['address'] ?? '';
-      _pincodeController.text = widget.initialData!['pincode'] ?? '';
-      _emailController.text = widget.initialData!['email'] ?? '';
-      _selectedFamilyMembers = widget.initialData!['family_members'];
-      _selectedAreaType = widget.initialData!['area_type'];
-      _selectedGender = widget.initialData!['gender'];
+    _fetchUserDetails();
+  }
+
+  Future<void> _fetchUserDetails() async {
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.user.uid)
+        .get();
+
+    if (userDoc.exists) {
+      Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
+      setState(() {
+        _nameController.text = data['name'] ?? '';
+        _addressController.text = data['address'] ?? '';
+        _pincodeController.text = data['pincode'] ?? '';
+        _emailController.text = data['email'] ?? '';
+        _selectedFamilyMembers = data['family_members'];
+        _selectedAreaType = data['area_type'];
+        _selectedGender = data['gender'];
+      });
     }
   }
 
@@ -155,7 +166,7 @@ class _AddUserDetailScreenState extends State<AddUserDetailScreen> {
                 child: ElevatedButton(
                   onPressed: _saveDetails,
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.deepPurple,
+                    backgroundColor: Colors.deepPurple,
                     padding: EdgeInsets.symmetric(vertical: 15.0),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.0),

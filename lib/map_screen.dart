@@ -1,59 +1,76 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MapScreen extends StatefulWidget {
+  const MapScreen({Key? key}) : super(key: key);
+
   @override
-  _MapScreenState createState() => _MapScreenState();
+  State<MapScreen> createState() => _MapScreenState();
 }
 
 class _MapScreenState extends State<MapScreen> {
-  late GoogleMapController _mapController;
+  static const LatLng _indoreLatLng = LatLng(22.7196, 75.8577);
+  static const CameraPosition _initialCameraPosition = CameraPosition(
+    target: _indoreLatLng,
+    zoom: 12.0,
+  );
 
-  final LatLng _indoreCenter =
-      LatLng(22.7196, 75.8577); // Coordinates for Indore
-  final Set<Marker> _markers = {};
+  final Set<Circle> _circles = {};
 
   @override
   void initState() {
     super.initState();
-    _setMarkers();
+    _fetchCircleLocations();
   }
 
-  void _setMarkers() {
-    // Add markers for specific locations in Indore
-    _markers.add(Marker(
-      markerId: MarkerId('marker1'),
-      position: LatLng(22.7196, 75.8577), // Example location
-      infoWindow: InfoWindow(
-        title: 'Indore Center',
-        snippet: 'Main area of Indore',
-      ),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-    ));
+  Future<void> _fetchCircleLocations() async {
+    try {
+      final QuerySnapshot snapshot =
+          await FirebaseFirestore.instance.collection('circle_location').get();
+      final Set<Circle> circles = snapshot.docs.map((doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        final LatLng position = LatLng(data['latitude'], data['longitude']);
+        return Circle(
+          circleId: CircleId(doc.id),
+          center: position,
+          radius: 1000,
+          strokeWidth: 2,
+          strokeColor: Colors.red,
+          fillColor: Colors.red.withOpacity(0.1),
+        );
+      }).toSet();
 
-    // Add more markers as needed
+      setState(() {
+        _circles.addAll(circles);
+      });
+    } catch (e) {
+      print('Error fetching circle locations: $e');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Center(
-          child: Text('Indore Map',
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+          child: Text(
+            'Highlighted Area',
+            style: TextStyle(
+              fontFamily: 'Mulish',
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
         ),
         backgroundColor: Colors.deepPurple.shade400,
       ),
       body: GoogleMap(
-        initialCameraPosition: CameraPosition(
-          target: _indoreCenter,
-          zoom: 12.0, // Adjust zoom level as needed
-        ),
-        markers: _markers,
-        onMapCreated: (GoogleMapController controller) {
-          _mapController = controller;
-        },
+        initialCameraPosition: _initialCameraPosition,
+        mapToolbarEnabled: false,
+        zoomControlsEnabled: false,
+        circles: _circles,
       ),
     );
   }

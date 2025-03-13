@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // Add this import
-import 'AdminPage.dart';
 import 'otp_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -15,66 +13,43 @@ class _LoginScreenState extends State<LoginScreen> {
 
   late String _verificationId;
 
-  Future<bool> _isPhoneNumberInAdmin(String phoneNumber) async {
-    final QuerySnapshot result = await FirebaseFirestore.instance
-        .collection('admin')
-        .where('phone', isEqualTo: phoneNumber)
-        .get();
-    return result.docs.isNotEmpty;
-  }
-
   void _sendCode() async {
     String phoneNumber = "+91" + _phoneController.text.trim();
 
     try {
-      // Check if phone number exists in the 'admin' collection
-      bool isAdmin = await _isPhoneNumberInAdmin(phoneNumber);
-
-      if (isAdmin) {
-        // Navigate to AdminPage if phone number exists
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => AdminPage(phoneNumber: phoneNumber),
-          ),
-        );
-      } else {
-        // Otherwise, proceed with OTP verification
-        FirebaseAuth _auth = FirebaseAuth.instance;
-        await _auth.verifyPhoneNumber(
-          phoneNumber: phoneNumber,
-          timeout: const Duration(seconds: 60),
-          verificationCompleted: (PhoneAuthCredential credential) async {
-            await _auth.signInWithCredential(credential);
-          },
-          verificationFailed: (FirebaseAuthException e) {
-            setState(() {
-              if (e.code == 'quota-exceeded') {
-                _showErrorDialog('Too many requests. Please try again later.');
-              } else {
-                _showErrorDialog('Failed to verify phone number: ${e.message}');
-              }
-            });
-          },
-          codeSent: (String verificationId, int? resendToken) {
-            setState(() {
-              _verificationId = verificationId;
-            });
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    OTPScreen(verificationId: _verificationId),
-              ),
-            );
-          },
-          codeAutoRetrievalTimeout: (String verificationId) {
-            setState(() {
-              _verificationId = verificationId;
-            });
-          },
-        );
-      }
+      FirebaseAuth _auth = FirebaseAuth.instance;
+      await _auth.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        timeout: const Duration(seconds: 60),
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          await _auth.signInWithCredential(credential);
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          setState(() {
+            if (e.code == 'quota-exceeded') {
+              _showErrorDialog('Too many requests. Please try again later.');
+            } else {
+              _showErrorDialog('Failed to verify phone number: ${e.message}');
+            }
+          });
+        },
+        codeSent: (String verificationId, int? resendToken) {
+          setState(() {
+            _verificationId = verificationId;
+          });
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => OTPScreen(verificationId: _verificationId),
+            ),
+          );
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {
+          setState(() {
+            _verificationId = verificationId;
+          });
+        },
+      );
     } catch (e) {
       _showErrorDialog('An unexpected error occurred: $e');
     }
@@ -104,6 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Center(
           child: Text(
             'Login/Signup',
@@ -183,7 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.deepPurple,
+                  backgroundColor: Colors.deepPurple,
                   padding:
                       EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
                   shape: RoundedRectangleBorder(

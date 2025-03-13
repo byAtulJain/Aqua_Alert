@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'bottom_nav_bar.dart';
 import 'login_screen.dart';
+import 'map_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,7 +38,7 @@ class AuthWrapper extends StatelessWidget {
             return BottomNavBar(
                 user: snapshot.data!); // Pass user to BottomNavBar
           } else {
-            return LoginScreen(); // Redirect to the login screen
+            return MapScreen(); // Redirect to the login screen
           }
         }
         return const Center(
